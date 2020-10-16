@@ -1,6 +1,7 @@
 const express = require('express');
 const apiRouter = express.Router();
-const db = require("./db.js")
+const db = require("./db.js");
+
 
 // Function to check IDs ///////////////////////////////////////////////////////////
 apiRouter.param("id", (req, res, next, id) => {
@@ -26,7 +27,6 @@ apiRouter.get("/minions", (req, res, next) => {
     const minions  = db.getAllFromDatabase(model); 
     res.body = minions;
     res.status(200).send(minions);
-    next();
 });
 
 apiRouter.get("/minions/:id", (req, res, next) => {
@@ -35,10 +35,9 @@ apiRouter.get("/minions/:id", (req, res, next) => {
     const minion = db.getFromDatabaseById(model, minionId.toString());
     res.body = minion;
     res.status(200).send(minion);
-    next();
 });
 
-apiRouter.delete("/minions/:id", (req, res, next) =>{
+apiRouter.delete("/minions/:id", (req, res, next) => {
     const model = "minions";
     const minionId = req.params.id;
     const deleted = db.deleteFromDatabasebyId(model, minionId.toString());
@@ -49,6 +48,28 @@ apiRouter.delete("/minions/:id", (req, res, next) =>{
     res.sendStatus(204);
 });
 
+apiRouter.put("/minions/:id", (req, res, next) => {
+    const model = "minions";
+    const update = db.updateInstanceInDatabase(model, req.body);
+    if (update) {
+        res.status(200).send(update);
+    } else {
+        res.status(500).send("Could not update minion");
+    }
+});
+
+/*
+apiRouter.post("/minions", (req, res, next) => {
+    const model = "minions";
+    console.log(req.body)
+    const newItem = db.addToDatabase(model, req.body);
+    if (newItem) {
+        res.status(201).send(newItem);
+    } else {
+        res.status(500).send("Could not create minion");
+    }
+});
+*/
 
 // Ideas ////////////////////////////////////////////////////////////////////////////
 apiRouter.get("/ideas", (req, res, next) => {
@@ -77,6 +98,16 @@ apiRouter.delete("/ideas/:id", (req, res, next) =>{
         return;
     }
     res.sendStatus(204);
+});
+
+apiRouter.put("/ideas/:id", (req, res, next) => {
+    const model = "ideas";
+    const update = db.updateInstanceInDatabase(model, req.body);
+    if (update) {
+        res.status(200).send(update);
+    } else {
+        res.status(500).send("Could not update idea");
+    }
 });
 
 
