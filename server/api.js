@@ -11,7 +11,6 @@ apiRouter.param("id", (req, res, next, id) => {
     if (!(typeof(id) === 'number' &&
     isFinite(id) &&
     Math.round(id) === id)) {
-        console.log("*** aint no number, bra")
         res.status(404).send(`Invalid ${model.slice(0,-1)} id`);
         return;
     } else if (typeof db.getFromDatabaseById(model, id.toString()) === "undefined") {
@@ -58,10 +57,9 @@ apiRouter.put("/minions/:id", (req, res, next) => {
     }
 });
 
-/*
+
 apiRouter.post("/minions", (req, res, next) => {
     const model = "minions";
-    console.log(req.body)
     const newItem = db.addToDatabase(model, req.body);
     if (newItem) {
         res.status(201).send(newItem);
@@ -69,7 +67,7 @@ apiRouter.post("/minions", (req, res, next) => {
         res.status(500).send("Could not create minion");
     }
 });
-*/
+
 
 // Ideas ////////////////////////////////////////////////////////////////////////////
 apiRouter.get("/ideas", (req, res, next) => {
@@ -110,6 +108,16 @@ apiRouter.put("/ideas/:id", (req, res, next) => {
     }
 });
 
+apiRouter.post("/ideas", (req, res, next) => {
+    const model = "ideas";
+    const newItem = db.addToDatabase(model, req.body);
+    if (newItem) {
+        res.status(201).send(newItem);
+    } else {
+        res.status(500).send("Could not create idea");
+    }
+});
+
 
 // Meetings /////////////////////////////////////////////////////////////////////////
 apiRouter.get("/meetings", (req, res, next) => {
@@ -125,5 +133,22 @@ apiRouter.delete("/meetings", (req, res, next) =>{
     const deleted = db.deleteAllFromDatabase(model);
     res.sendStatus(204);
 });
+
+apiRouter.post("/meetings", (req, res, next) => {
+    const model = "meetings";
+    const meeting = db.createMeeting();
+    if (meeting) {
+        const newItem = db.addToDatabase(model, meeting);
+        if (newItem) {
+            res.status(201).send(newItem);
+        } else {
+            res.status(500).send("Could not create meeting");
+        }
+    } else {
+        res.status(500).send("Could not create meeting");
+    }
+    
+});
+
  
 module.exports = apiRouter;
