@@ -38,6 +38,17 @@ apiRouter.get("/minions/:id", (req, res, next) => {
     next();
 });
 
+apiRouter.delete("/minions/:id", (req, res, next) =>{
+    const model = "minions";
+    const minionId = req.params.id;
+    const deleted = db.deleteFromDatabasebyId(model, minionId.toString());
+    if (!deleted) {
+        res.sendStatus(500);
+        return;
+    }
+    res.sendStatus(204);
+});
+
 
 // Ideas ////////////////////////////////////////////////////////////////////////////
 apiRouter.get("/ideas", (req, res, next) => {
@@ -57,6 +68,17 @@ apiRouter.get("/ideas/:id", (req, res, next) => {
     next();
 });
 
+apiRouter.delete("/ideas/:id", (req, res, next) =>{
+    const model = "ideas";
+    const ideaId = req.params.id;
+    const deleted = db.deleteFromDatabasebyId(model, ideaId.toString());
+    if (!deleted) {
+        res.sendStatus(500);
+        return;
+    }
+    res.sendStatus(204);
+});
+
 
 // Meetings /////////////////////////////////////////////////////////////////////////
 apiRouter.get("/meetings", (req, res, next) => {
@@ -65,6 +87,12 @@ apiRouter.get("/meetings", (req, res, next) => {
     res.body = meetings;
     res.status(200).send(meetings);
     next();
+});
+
+apiRouter.delete("/meetings", (req, res, next) =>{
+    const model = "meetings";
+    const deleted = db.deleteAllFromDatabase(model);
+    res.sendStatus(204);
 });
  
 module.exports = apiRouter;
