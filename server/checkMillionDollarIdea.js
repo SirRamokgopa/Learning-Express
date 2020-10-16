@@ -3,8 +3,6 @@ const checkMillionDollarIdea = (req, res, next) => {
     const weeks = +req.body.numWeeks;
     function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
     
-    console.log(`weeks: ${weeks}   revenue: ${revenue}`)
-    console.log(typeof(weeks))
     // Check if revenue and weeks are numbers and if idea is at least milliondolars
     if (weeks*revenue < 1000000 || (!isNumber(revenue) || !isNumber(weeks))) {
         res.sendStatus(400);

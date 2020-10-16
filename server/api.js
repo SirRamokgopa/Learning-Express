@@ -5,7 +5,7 @@ const checkMillionDollarIdea = require("./checkMillionDollarIdea.js");
 
 
 // Function to check IDs ///////////////////////////////////////////////////////////
-apiRouter.param("id", (req, res, next, id) => {
+const theCheck = (req, res, next, id) => {
     const model = req.path.split("/").reverse()[1];
     id = +id;
     // Check for valid  ID
@@ -19,7 +19,9 @@ apiRouter.param("id", (req, res, next, id) => {
         return;
     }
     next();
-});
+}
+apiRouter.param("id", theCheck);
+apiRouter.param("workId", theCheck);
 
 // Minions /////////////////////////////////////////////////////////////////////////
 apiRouter.get("/minions", (req, res, next) => {
@@ -58,7 +60,6 @@ apiRouter.put("/minions/:id", (req, res, next) => {
     }
 });
 
-
 apiRouter.post("/minions", (req, res, next) => {
     const model = "minions";
     const newItem = db.addToDatabase(model, req.body);
@@ -67,6 +68,56 @@ apiRouter.post("/minions", (req, res, next) => {
     } else {
         res.status(500).send("Could not create minion");
     }
+});
+
+//// Minions work ///////////////////////////////////////////////////////////////////
+apiRouter.get("/minions/:id/work", (req, res, next) => {
+    const model = "work";
+    const minionId = req.params.id;
+    const work = db.getFromDatabaseByMinionId(model, minionId.toString());
+    if (work[0]) {
+        res.body = work;
+        res.status(200).send(work);
+    } else {
+        res.status(404).send();
+    }
+});
+
+apiRouter.post("/minions/:id/work", (req, res, next) => {
+    const model = "work";
+    const newItem = db.addToDatabase(model, req.body);
+    if (newItem) {
+        res.status(201).send(newItem);
+    } else {
+        res.status(500).send("Could not create work");
+    }
+});
+
+apiRouter.put("/minions/:id/work/:workId", (req, res, next) => {
+    const model = "work";
+    let update;
+    try {
+        update = db.updateInstanceInDatabase(model, req.body);
+    } catch (e) {
+        res.status(400).send();
+        return;
+    }
+    if (update) {
+        res.status(200).send(update);
+    } else {
+        res.status(500).send("Could not update work");
+    }
+}); 
+
+apiRouter.delete("/minions/:id/work/:workId", (req, res, next) =>{
+    const model = "work";
+    const workId = req.params.workId;
+    const deleted = db.deleteFromDatabasebyId(model, workId.toString());
+    if (!deleted) {
+        res.sendStatus(500);
+        return;
+    }
+    res.sendStatus(204);
 });
 
 

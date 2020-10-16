@@ -210,6 +210,16 @@ const getFromDatabaseById = (modelType, id) => {
   });
 }
 
+const getFromDatabaseByMinionId = (modelType, id) => {
+  const model = findDataArrayByName(modelType);
+  if (model === null) {
+    return null;
+  }
+  return model.data.filter((element) => {
+    return element.minionId === id;
+  });
+}
+
 const addToDatabase = (modelType, instance) => {
   const model = findDataArrayByName(modelType);
   if (model === null) {
@@ -267,6 +277,7 @@ module.exports = {
   createMeeting,
   getAllFromDatabase,
   getFromDatabaseById,
+  getFromDatabaseByMinionId,
   addToDatabase,
   updateInstanceInDatabase,
   deleteFromDatabasebyId,
