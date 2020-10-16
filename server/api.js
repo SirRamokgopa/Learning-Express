@@ -1,6 +1,7 @@
 const express = require('express');
 const apiRouter = express.Router();
 const db = require("./db.js");
+const checkMillionDollarIdea = require("./checkMillionDollarIdea.js");
 
 
 // Function to check IDs ///////////////////////////////////////////////////////////
@@ -98,7 +99,7 @@ apiRouter.delete("/ideas/:id", (req, res, next) =>{
     res.sendStatus(204);
 });
 
-apiRouter.put("/ideas/:id", (req, res, next) => {
+apiRouter.put("/ideas/:id", checkMillionDollarIdea, (req, res, next) => {
     const model = "ideas";
     const update = db.updateInstanceInDatabase(model, req.body);
     if (update) {
@@ -108,7 +109,7 @@ apiRouter.put("/ideas/:id", (req, res, next) => {
     }
 });
 
-apiRouter.post("/ideas", (req, res, next) => {
+apiRouter.post("/ideas", checkMillionDollarIdea, (req, res, next) => {
     const model = "ideas";
     const newItem = db.addToDatabase(model, req.body);
     if (newItem) {
