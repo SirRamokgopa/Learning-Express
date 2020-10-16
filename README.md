@@ -42,9 +42,9 @@ In **server.js**, there some boilerplate code and the server was missing key fun
   - POST /api/meetings to create a new meeting and save it to the database.
   - DELETE /api/meetings to delete _all_ meetings from the database.
 
-For all `/api/minions` and `/api/ideas routes`, any POST or PUT requests will send their new/updated resources in the request body. POST request bodies will not have an `id` property, you will have to set it based on the next id in sequence.
+For all `/api/minions` and `/api/ideas routes`, any POST or PUT requests will send their new/updated resources in the request body. POST request bodies will not have an `id` property, and is set based on the next id in sequence.
 
-For `/api/meetings` POST route, no request body is necessary, as meetings are generated automatically by the server upon request. Use the provided `createMeeting` function exported from **db.js** to create a new meeting object.
+For `/api/meetings` POST route, no request body is necessary, as meetings are generated automatically by the server upon request. The provided `createMeeting` function exported from **db.js** is used to create a new meeting object.
 
 ### Working with the 'Database'
 
