@@ -6,7 +6,7 @@ In this project, I created an API to serve information to a "Boss Machine", a un
 
 ## Implementation Details
 
-To complete the project, yI had to complete code in a few sections of the project. Everything inside the **browser**, **public**, or **node_modules** was alreay supplied.
+To complete the project, I had to complete code in a few sections of the project. Everything inside the **browser**, **public**, or **node_modules** was alreay supplied.
 
 ### Server Boilerplate
 
